@@ -20,16 +20,26 @@ Following Items would be required to be installed in the system running the scri
 2. Jdk 1.8 or above
 3. Following dependency are added in Pom.xml file
 	Add following Selenium Dependencies to project:
+	
 		#selenium-java
+		
 		#junit
+		
 		#maven-compiler-plugin
+		
 
 	Add Cucumber Dependencies to the Project:
+	
 		#cucumber-core
+		
 		#cucumber-java
+		
 		#cucumber-jvm-deps
+		
 		#cucumber-junit
+		
 		#cucumber-reporting
+		
 		#gherkin
 
 	Add NgWebDriver Dependencies to the Project:
