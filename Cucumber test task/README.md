@@ -66,3 +66,13 @@ https://chromedriver.chromium.org/downloads
 
 7. Test Resuts will be displayed in the console.
 
+***************************************************************************************
+Impacted Files:
+Feature file
+Cucumber test task/SeleniumCucumber/Features/Cepheid.feature
+Step definition file
+Cucumber test task/SeleniumCucumber/src/test/java/stepDefinitions/CepheidTestSteps.java
+Hooks file
+Cucumber test task/SeleniumCucumber/src/test/java/stepDefinitions/Hooks.java
+Test Runner file
+Cucumber test task/SeleniumCucumber/src/test/java/testRunner/TestRunner.java
