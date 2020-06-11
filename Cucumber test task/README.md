@@ -54,15 +54,15 @@ Following Items would be required to be installed in the system running the scri
  ***************************************************************************************
 Impacted Files:
 **************************************************************************************
-#Feature-File
+#Feature File - It contains list of test scenerios  
 
 Cucumber test task/SeleniumCucumber/Features/Cepheid.feature
 
-#StepDefinition file
+#StepDefinition file - contains java method that is linked to a step in the scenario in feature file
 
 Cucumber test task/SeleniumCucumber/src/test/java/stepDefinitions/CepheidTestSteps.java
 
-#Hooks file
+#Hooks file - contains the block of code which can be defined with each scenario in step definition file by using the annotations
 
 Cucumber test task/SeleniumCucumber/src/test/java/stepDefinitions/Hooks.java
 
