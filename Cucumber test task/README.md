@@ -10,7 +10,9 @@ This is a user manual for the Automation script, written as part of the Technica
 The Details of the Auto Script are as follows:
 
 Auto Script: Selenium
+
 Binding Language: Java
+
 Browser Selected: Chrome
 
 **************************************************************************************
