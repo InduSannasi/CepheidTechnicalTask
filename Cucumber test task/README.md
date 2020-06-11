@@ -50,25 +50,8 @@ Following Items would be required to be installed in the system running the scri
 		#ngwebdriver
 
  4. Chromedriver (Path added to system Environmental variables)
-***************************************************************************************
-Steps to follow:
-
-
-1. The IDE I used is IntelliJ . It can be downloaded from the below link. Install the IDE in required path.
-https://www.jetbrains.com/idea/download/#section=windows
-
-2. Chrome driver to initiate the browser must be installed and added to the system variable path. File can be downloaded from the below link.
-https://chromedriver.chromium.org/downloads
-
-3. Site packages mentioned above must be added to the IDE.
-
-5. Create a new project. Search and open the Cepheid.feature file in project named SeleniumCucumber(Sent in the zip file)
-
-6. Run the Script.
-
-7. Test Resuts will be displayed in the console.
-
-***************************************************************************************
+ 
+ ***************************************************************************************
 Impacted Files:
 **************************************************************************************
 #Feature-File
@@ -90,3 +73,22 @@ Cucumber test task/SeleniumCucumber/src/test/java/testRunner/TestRunner.java
 #pom file
 
 Cucumber test task/SeleniumCucumber/pom.xml
+
+***************************************************************************************
+Steps to follow:
+
+
+1. The IDE I used is IntelliJ . It can be downloaded from the below link. Install the IDE in required path.
+https://www.jetbrains.com/idea/download/#section=windows
+
+2. Chrome driver to initiate the browser must be installed and added to the system variable path. File can be downloaded from the below link.
+https://chromedriver.chromium.org/downloads
+
+3. Site packages mentioned above must be added to the IDE.
+
+5. Create a new project. Search and open the Cepheid.feature file in project named SeleniumCucumber(Sent in the zip file)
+
+6. Run the Script.
+
+7. Test Resuts will be displayed in the console.
+
