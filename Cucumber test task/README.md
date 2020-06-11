@@ -86,3 +86,7 @@ Cucumber test task/SeleniumCucumber/src/test/java/stepDefinitions/Hooks.java
 #Test Runner file
 
 Cucumber test task/SeleniumCucumber/src/test/java/testRunner/TestRunner.java
+
+#pom file
+
+Cucumber test task/SeleniumCucumber/pom.xml
