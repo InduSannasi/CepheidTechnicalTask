@@ -1,4 +1,4 @@
-Feature: Cepheid Task Login
+Feature: Login to the Test Application to modify Employee data
 
   Scenario: Login with Valid Credentials
     Given User enters Valid UserName and Password
