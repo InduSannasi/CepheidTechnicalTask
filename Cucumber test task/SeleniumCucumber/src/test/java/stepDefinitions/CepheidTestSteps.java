@@ -11,37 +11,46 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pageObjects.EmployeePage;
+import pageObjects.LoginPage;
+import pageObjects.UpdatePage;
+import utilities.waitHelper;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CepheidTestSteps {
-    String loginUrl = "http://cafetownsend-angular-rails.herokuapp.com/login";
+   
     public WebDriver driver;
     public NgWebDriver ngDriver;
+    public LoginPage loginPage;
+    public UpdatePage updatePage;
+    public EmployeePage employeePage;
+    waitHelper wait;
     String lastName;
     String newEmployee;
     String new_email;
+    String loginUrl;
 
     public CepheidTestSteps() {
         driver = Hooks.driver;
+        loginUrl = Hooks.loginUrl;
+        wait = new waitHelper(driver);
+        loginPage = new LoginPage(driver);
+        updatePage = new UpdatePage(driver);
+        employeePage = new EmployeePage(driver);
         JavascriptExecutor jsDriver = (JavascriptExecutor) driver;
         ngDriver = new NgWebDriver(jsDriver);
-        ngDriver.waitForAngularRequestsToFinish();
     }
 
-    @Given("User enters Valid UserName and Password")
-    public void user_enters_Valid_UserName_and_Password() {
-        driver.findElement(ByAngular.model("user.name")).sendKeys("Luke");
-        driver.findElement(ByAngular.model("user.password")).sendKeys("Skywalker");
-
-    }
-
-    @When("Click login button")
-    public void click_login_button() {
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
+    @Given("User login with valid username {string} and password {string}")
+    public void user_login_with_valid_username_and_password(String username, String password) {
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
+        loginPage.clickLogin();
     }
 
     @Then("login should be successful")
@@ -49,29 +58,20 @@ public class CepheidTestSteps {
         WebDriverWait wait = new WebDriverWait(driver, 30);
         wait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(loginUrl)));
         String currentURL = driver.getCurrentUrl();
-        System.out.println(currentURL);
         Assert.assertTrue(currentURL.contains("/employees"));
     }
-
-
-    @Given("User enters Invalid UserName or Password")
-    public void user_enters_Invalid_UserName_or_Password() {
-        driver.findElement(ByAngular.model("user.name")).sendKeys("Leia");
-        driver.findElement(ByAngular.model("user.password")).sendKeys("Skywalker");
+    @Given("User enters Invalid username {string} and password {string}")
+    public void user_enters_Invalid_username_and_password(String username, String password) {
+        loginPage.setUsername(username);
+        loginPage.setPassword(password);
     }
 
     @Then("login should fail")
     public void login_should_fail() {
         driver.findElement(By.cssSelector("button[type='submit']")).click();
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//*[contains(text(),'Invalid username or password!')]")).isDisplayed();
-    }
-
-    @Given("User logs in successfully")
-    public void user_logs_in_successfully() {
-        driver.findElement(ByAngular.model("user.name")).sendKeys("Luke");
-        driver.findElement(ByAngular.model("user.password")).sendKeys("Skywalker");
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
+        if((driver.getPageSource().contains("Invalid username or password!')")))
+            Assert.assertTrue(true);
     }
 
     @When("User clicks logout button")
@@ -80,7 +80,7 @@ public class CepheidTestSteps {
         wait.until(ExpectedConditions.not(ExpectedConditions.urlToBe(loginUrl)));
         WebElement data = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("p[ng-click='logout()']")));
         Assert.assertTrue(data.isDisplayed());
-        driver.findElement(By.cssSelector("p[ng-click='logout()']")).click();
+        loginPage.clickLogout();
     }
 
     @Then("Navigate to homepage")
@@ -92,20 +92,20 @@ public class CepheidTestSteps {
     @When("Open create employee wrapper")
     public void open_create_employee_wrapper() {
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//*[@id=\"bAdd\"]")).click();
+        employeePage.clickAddBtn();
     }
 
     @Then("Provide details and add employee")
     public void provide_details_and_add_employee() {
         ngDriver.waitForAngularRequestsToFinish();
-        driver.findElement(ByAngular.model("selectedEmployee.firstName")).sendKeys("Luke");
+        updatePage.setFirstName("Luke");
         lastName= RandomStringUtils.randomAlphabetic(4);
         newEmployee = "Luke"+" "+lastName;
-        driver.findElement(ByAngular.model("selectedEmployee.lastName")).sendKeys(lastName);
-        driver.findElement(ByAngular.model("selectedEmployee.startDate")).sendKeys("2019-01-01");
-        driver.findElement(ByAngular.model("selectedEmployee.email")).sendKeys("luke"+lastName+"@cepheid.com");
+        updatePage.setLastName(lastName);
+        updatePage.setStartDate("2019-01-01");
+        updatePage.setEmail("luke"+lastName+"@cepheid.com");
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//button[text()=\"Add\"]")).click();
+        updatePage.clickAddBtn();
     }
 
     @And("Validate addition of new employee")
@@ -121,7 +121,7 @@ public class CepheidTestSteps {
     public void select_the_added_employee_to_update() {
         driver.findElement(By.xpath("//ul[@id='employee-list']/li[contains (text(),'" + newEmployee + "')]")).click();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//*[@id=\"bEdit\"]")).click();
+        employeePage.clickEditBtn();
     }
 
     @And("Make changes to the employee profile and submit")
@@ -131,18 +131,17 @@ public class CepheidTestSteps {
         new_email = "001"+old_email;
         driver.findElement(ByAngular.model("selectedEmployee.email")).sendKeys(new_email);
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//button[text()=\"Update\"]")).click();
+        updatePage.clickUpdateBtn();
         Assert.assertTrue(driver.getCurrentUrl().contains("/employees"));
     }
 
     @And("Verify the changes are reflected")
     public void verify_the_changes_are_reflected() {
-        System.out.println(newEmployee);
         driver.findElement(By.xpath("//ul[@id='employee-list']/li[contains (text(),'" + newEmployee + "')]")).click();
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        driver.findElement(By.xpath("//*[@id=\"bEdit\"]")).click();
+        employeePage.clickEditBtn();
         ngDriver.waitForAngularRequestsToFinish();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()=\"Update\"]")));
+        WebElement update = driver.findElement(By.xpath("//button[text()=\"Update\"]"));
+        wait.WaitForElement(update,5);
         String current_email = driver.findElement(ByAngular.model("selectedEmployee.email")).getAttribute("value");
         Assert.assertEquals(current_email, new_email);
     }
@@ -151,15 +150,32 @@ public class CepheidTestSteps {
     public void select_the_added_employee_profile_to_delete() {
         driver.findElement(By.xpath("//ul[@id='employee-list']/li[contains (text(),'" + newEmployee + "')]")).click();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
-        driver.findElement(By.xpath("//*[@id=\"bDelete\"]")).click();
+        employeePage.clickDeleteBtn();
         driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
         driver.switchTo().alert().accept();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
     @Then("Delete employee profile and validate change")
     public void delete_employee_profile_and_validate_change() {
         ngDriver.waitForAngularRequestsToFinish();
-        Boolean isPresent = driver.findElements(By.xpath("//ul[@id='employee-list']/li[contains (text(),'" + lastName + "')]")).size() == 0;
-        Assert.assertEquals(isPresent, true);
+        driver.findElements(By.xpath("//ul[@id='employee-list']/li[contains (text(),'" + lastName + "')]")).isEmpty();
+        System.out.println("The Deleted Employee  is: "+ newEmployee +"");
+    }
+    @When("DoubleClick on employee")
+    public void doubleclick_on_employee() {
+        ngDriver.waitForAngularRequestsToFinish();
+        Actions actions = new Actions(driver);
+        WebElement employee = driver.findElement(By.xpath("//*[@id=\"employee-list\"]/li[1]"));
+        actions.doubleClick(employee).perform();
+    }
+
+    @Then("Navigate to Update page")
+    public void navigate_to_Update_page() {
+        ngDriver.waitForAngularRequestsToFinish();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        WebElement updateValue = driver.findElement(By.xpath("//button[text()=\"Update\"]"));
+        wait.WaitForElement(updateValue,5);
+        Assert.assertTrue(driver.getCurrentUrl().contains("/edit"));
     }
 }
