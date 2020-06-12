@@ -59,5 +59,5 @@ public class UpdatePage {
     public void clickUpdateBtn(){
         updateBtn.click();
     }
-
 }
+
