@@ -60,12 +60,6 @@ public class CepheidTestSteps {
         String currentURL = driver.getCurrentUrl();
         Assert.assertTrue(currentURL.contains("/employees"));
     }
-    @Given("User enters Invalid username {string} and password {string}")
-    public void user_enters_Invalid_username_and_password(String username, String password) {
-        loginPage.setUsername(username);
-        loginPage.setPassword(password);
-        loginPage.clickLogin();
-    }
 
     @Then("login should fail")
     public void login_should_fail() {
