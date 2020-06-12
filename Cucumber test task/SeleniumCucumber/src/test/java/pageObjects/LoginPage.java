@@ -45,5 +45,4 @@ public class LoginPage {
     public void clickLogout(){
         logout.click();
     }
-
 }
