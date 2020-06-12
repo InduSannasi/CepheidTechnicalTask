@@ -46,13 +46,13 @@ public class CepheidTestSteps {
         ngDriver = new NgWebDriver(jsDriver);
     }
 
-    @Given("User login with valid username {string} and password {string}")
-    public void user_login_with_valid_username_and_password(String username, String password) {
+    @Given("User login with username {string} and password {string}")
+    public void user_login_with_username_and_password(String username, String password) {
         loginPage.setUsername(username);
         loginPage.setPassword(password);
         loginPage.clickLogin();
     }
-
+   
     @Then("login should be successful")
     public void login_should_be_successful() {
         WebDriverWait wait = new WebDriverWait(driver, 30);
