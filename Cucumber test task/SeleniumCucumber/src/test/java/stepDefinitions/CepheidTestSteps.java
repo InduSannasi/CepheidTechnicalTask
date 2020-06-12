@@ -64,11 +64,12 @@ public class CepheidTestSteps {
     public void user_enters_Invalid_username_and_password(String username, String password) {
         loginPage.setUsername(username);
         loginPage.setPassword(password);
+        loginPage.clickLogin();
     }
 
     @Then("login should fail")
     public void login_should_fail() {
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
+       
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         if((driver.getPageSource().contains("Invalid username or password!')")))
             Assert.assertTrue(true);
